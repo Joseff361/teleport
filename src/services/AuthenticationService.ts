@@ -1,8 +1,10 @@
 import {
   Auth,
+  User,
   UserCredential,
   createUserWithEmailAndPassword,
   getAuth,
+  updateProfile,
 } from 'firebase/auth';
 
 class AuthenticationService {
@@ -25,6 +27,17 @@ class AuthenticationService {
       email,
       password,
     );
+  }
+
+  public static async updateProfile(
+    user: User,
+    displayName: string,
+    photoURL: string,
+  ) {
+    return await updateProfile(user, {
+      displayName,
+      photoURL,
+    });
   }
 }
 
