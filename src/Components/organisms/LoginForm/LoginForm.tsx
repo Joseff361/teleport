@@ -2,6 +2,7 @@ import { FormEvent } from 'react';
 
 import { LoginFormError, LoginFormFields } from '../../../models';
 import AuthenticationService from '../../../services/AuthenticationService';
+import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
 import StorageService from '../../../services/StorageService';
 
 function LoginForm() {
@@ -23,17 +24,38 @@ function LoginForm() {
         );
 
       console.log(user);
+
+      let downloadURL: string = '';
+
       try {
-        const downloadURL = await StorageService.uploadImageAndGetDownloadURL(
-          'displayName',
+        downloadURL = await StorageService.uploadImageAndGetDownloadURL(
+          formProps.username,
           formProps.file,
         );
         console.log(downloadURL);
 
-        AuthenticationService.updateProfile(user, 'displayName', downloadURL);
+        AuthenticationService.updateProfile(
+          user,
+          formProps.username,
+          downloadURL,
+        );
       } catch {
         alert(
           'Successful registration. However, the image could not be attached...',
+        );
+        return;
+      }
+
+      try {
+        RealTimeDatabaseService.addMemberToTeleportChat({
+          userId: user.uid,
+          username: formProps.username,
+          email: formProps.email,
+          imageUrl: downloadURL,
+        });
+      } catch {
+        alert(
+          'Successful registration. However, we could not add you to the chat...',
         );
         return;
       }
@@ -47,11 +69,12 @@ function LoginForm() {
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form action="POST" onSubmit={submitHandler}>
+      <input type="text" name="username" id="username" />
       <input type="email" name="email" id="email" />
       <input type="password" name="password" id="password" />
       <input type="file" name="file" id="file" accept=".png, .jpg, .jpeg" />
-      <button>Register</button>
+      <button type="submit">Register</button>
     </form>
   );
 }
