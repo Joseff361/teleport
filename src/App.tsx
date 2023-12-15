@@ -1,21 +1,39 @@
 import { useEffect } from 'react';
-import './App.css';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import Chat from './Components/organisms/Chat/Chat';
-import LoginForm from './Components/organisms/LoginForm/LoginForm';
+import RootLayout from './components/layouts/RootLayout';
+import ChatPage from './components/pages/ChatPage/ChatPage';
+import SignInPage from './components/pages/SignInPage/SignInPage';
+import SignUpPage from './components/pages/SignUpPage.tsx/SignUpPage';
 import FirebaseService from './services/FirebaseService';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      {
+        path: '/signup',
+        element: <SignUpPage />,
+      },
+      {
+        path: '/signin',
+        element: <SignInPage />,
+      },
+      {
+        path: '/chat',
+        element: <ChatPage />,
+      },
+    ],
+  },
+]);
 
 function App() {
   useEffect(() => {
     FirebaseService.init();
   }, []);
 
-  return (
-    <>
-      <LoginForm />
-      <Chat />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
