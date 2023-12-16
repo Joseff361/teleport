@@ -3,25 +3,28 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import RootLayout from './components/layouts/RootLayout';
 import ChatPage from './components/pages/ChatPage/ChatPage';
+import ErrorPage from './components/pages/ErrorPage/ErrorPage';
 import SignInPage from './components/pages/SignInPage/SignInPage';
 import SignUpPage from './components/pages/SignUpPage.tsx/SignUpPage';
 import FirebaseService from './services/FirebaseService';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/', // Absoulte path due it starts with "/"
     element: <RootLayout />,
+    // For this implementation, all the errors will bubble up to the root route definition
+    errorElement: <ErrorPage />,
     children: [
       {
-        path: '/signup',
-        element: <SignUpPage />,
-      },
-      {
-        path: '/signin',
+        index: true, // Default page if the parent is active
         element: <SignInPage />,
       },
       {
-        path: '/chat',
+        path: 'signup', // Relative path due it starts without "/"
+        element: <SignUpPage />,
+      },
+      {
+        path: 'chat', // Relative path
         element: <ChatPage />,
       },
     ],
