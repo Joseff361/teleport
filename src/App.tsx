@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     path: '/', // Absoulte path due it starts with "/"
     element: <RootLayout />,
     // For this implementation, all the errors will bubble up to the root route definition
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />, // If there is an error in some of the children paths (or the current path), this screen will be shown
     children: [
       {
         index: true, // Default page if the parent is active
