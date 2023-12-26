@@ -9,7 +9,11 @@ import SignInPage from './components/pages/SignInPage/SignInPage';
 import SignUpPage from './components/pages/SignUpPage.tsx/SignUpPage';
 import FirebaseService from './services/FirebaseService';
 import { store } from './store';
-import { checkAuthLoader, fetchCredentials } from './utils/autht';
+import {
+  chechkNoAuthLoader,
+  checkAuthLoader,
+  fetchCredentials,
+} from './utils/auth';
 
 const router = createBrowserRouter([
   {
@@ -23,10 +27,12 @@ const router = createBrowserRouter([
       {
         index: true, // Default page if the parent is active
         element: <SignInPage />,
+        loader: chechkNoAuthLoader,
       },
       {
         path: 'signup', // Relative path due it starts without "/"
         element: <SignUpPage />,
+        loader: chechkNoAuthLoader,
       },
       {
         path: 'chat', // Relative path

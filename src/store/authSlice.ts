@@ -2,12 +2,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UserCredential } from 'firebase/auth';
 
 interface AuthState {
-  user: UserCredential | null;
+  credentials: UserCredential | null;
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
-  user: null,
+  credentials: null,
 };
 
 export const authSlice = createSlice({
@@ -17,10 +17,10 @@ export const authSlice = createSlice({
   reducers: {
     setAuth: (state, action: PayloadAction<string>) => {
       const credentials = JSON.parse(action.payload) as UserCredential;
-      state.user = credentials;
+      state.credentials = credentials;
     },
     removeCredentials: state => {
-      state.user = null;
+      state.credentials = null;
     },
   },
 });

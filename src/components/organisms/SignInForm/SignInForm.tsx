@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useInput } from '../../../hooks/useInput';
 import AuthenticationService from '../../../services/AuthenticationService';
 import { isValidEmail } from '../../../utils';
-import { saveCredentials } from '../../../utils/autht';
+import { saveCredentials } from '../../../utils/auth';
 
 function SignInForm() {
   const { value: emailValue, inputChangeHandler: emailChangeHandler } =

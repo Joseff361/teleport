@@ -28,7 +28,7 @@ export const logout = () => {
 };
 
 export const getAuthCredentials = (): UserCredential | null => {
-  return store.getState().auth.user;
+  return store.getState().auth.credentials;
 };
 
 export const checkAuthLoader = () => {
@@ -36,6 +36,16 @@ export const checkAuthLoader = () => {
 
   if (!credentials) {
     return redirect('/');
+  }
+
+  return null;
+};
+
+export const chechkNoAuthLoader = () => {
+  const credentials = getAuthCredentials();
+
+  if (credentials) {
+    return redirect('/chat');
   }
 
   return null;

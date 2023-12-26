@@ -19,14 +19,14 @@ class RealTimeDatabaseService {
     userId,
     username,
     email,
-    imageUrl,
+    photoURL,
   }: ChatMember) {
     const db = this.getDatabaseInstance();
 
     await set(ref(db, `members/${MAIN_CHAT_ID}/` + userId), {
       username,
       email,
-      imageUrl,
+      photoURL,
     });
   }
 
@@ -34,6 +34,7 @@ class RealTimeDatabaseService {
     userId,
     username,
     message,
+    photoURL,
   }: ChatMessage) {
     const db = this.getDatabaseInstance();
     const timestamp = new Date().getTime();
@@ -42,7 +43,12 @@ class RealTimeDatabaseService {
       username,
       message,
       timestamp,
+      photoURL,
     });
+  }
+
+  public static getTeleportChatReference() {
+    return ref(this.getDatabaseInstance(), 'messages/' + MAIN_CHAT_ID);
   }
 }
 

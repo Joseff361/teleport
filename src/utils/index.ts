@@ -16,11 +16,15 @@ export const hasAtLeastThreeCharactersLong = (value: string) => {
 };
 
 export const hasAtLeastSixCharactersLong = (value: string) => {
-  return value.trim().length > 6;
+  return value.trim().length > 5;
 };
 
 export const fileHasValidExtension = (value: File | null) => {
   return (
     !!value && ['image/png', 'image/jpg', 'image/jpeg'].includes(value.type)
   );
+};
+
+export const isNotAnEmptyMessage = (value: string) => {
+  return value.trim().length > 0;
 };

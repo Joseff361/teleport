@@ -14,15 +14,23 @@ export interface ChatMember {
   userId: string;
   username: string;
   email: string;
-  imageUrl: string;
+  photoURL: string | null | undefined;
 }
 
 export interface ChatMessage {
   userId: string;
   username: string;
   message: string;
+  photoURL: string | null | undefined;
 }
 
 export interface SendMessageFormFields {
   message: string;
+}
+
+export interface TeleportMessage {
+  message: string;
+  timestamp: number;
+  username: string;
+  photoURL: string | null | undefined;
 }

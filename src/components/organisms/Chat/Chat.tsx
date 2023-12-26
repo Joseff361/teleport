@@ -1,38 +1,30 @@
-import { FormEvent } from 'react';
-
-import { LoginFormError, SendMessageFormFields } from '../../../models';
+import { onValue } from 'firebase/database';
+import { useEffect, useState } from 'react';
+import { TeleportMessage } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
 
 function Chat() {
-  const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(
-      event.target as unknown as HTMLFormElement | undefined,
-    );
+  const [messages, setMessages] = useState<TeleportMessage[]>([]);
 
-    const formProps = Object.fromEntries(
-      formData,
-    ) as unknown as SendMessageFormFields;
-    console.log(formProps);
-
-    try {
-      await RealTimeDatabaseService.sendMessageToTeleportChat({
-        userId: 'mx8CQ8rRDyP9leU3axrlWT59ERf2',
-        username: 'Joseff',
-        message: 'Hello world2!',
-      });
-    } catch (error: unknown) {
-      const errorCode = (error as LoginFormError).code;
-      const errorMessage = (error as LoginFormError).message;
-      alert(errorMessage + errorCode);
-    }
-  };
+  useEffect(() => {
+    onValue(RealTimeDatabaseService.getTeleportChatReference(), snaptshot => {
+      const values = snaptshot.val() as Record<string, TeleportMessage>;
+      setMessages(Object.values(values));
+    });
+  }, []);
 
   return (
-    <form action="POST" onSubmit={submitHandler}>
-      <input type="text" name="message" id="v" />
-      <button type="submit">Send</button>
-    </form>
+    <div>
+      {messages.map(message => (
+        <div key={message.username + message.timestamp.toString()}>
+          <span>{message.message}</span>
+          <span>{message.username}</span>
+          {!!message.photoURL && (
+            <img src={message.photoURL} style={{ width: 40, height: 40 }} />
+          )}
+        </div>
+      ))}
+    </div>
   );
 }
 

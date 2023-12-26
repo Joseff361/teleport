@@ -1,14 +1,22 @@
 import { FormEvent, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useInput } from '../../../hooks/useInput';
+import { LoginFormError } from '../../../models';
+import AuthenticationService from '../../../services/AuthenticationService';
+import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
+import StorageService from '../../../services/StorageService';
 import {
   fileHasValidExtension,
   hasAtLeastSixCharactersLong,
   hasAtLeastThreeCharactersLong,
   isValidEmail,
 } from '../../../utils';
+import { saveCredentials } from '../../../utils/auth';
 
 function SignUpForm() {
+  const navigate = useNavigate();
+
   const {
     value: usernameValue,
     inputChangeHandler: usernameChangeHandler,
@@ -27,8 +35,11 @@ function SignUpForm() {
     hasError: passwordHasErrors,
   } = useInput<string>('', hasAtLeastSixCharactersLong);
 
-  const { inputChangeHandler: fileChangeHandler, hasError: fileHasErrors } =
-    useInput<File | null>(null, fileHasValidExtension);
+  const {
+    value: fileValue,
+    inputChangeHandler: fileChangeHandler,
+    hasError: fileHasErrors,
+  } = useInput<File | null>(null, fileHasValidExtension);
 
   const disableForm: boolean = useMemo(() => {
     if (
@@ -56,60 +67,55 @@ function SignUpForm() {
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    /*
     try {
       const { user } =
         await AuthenticationService.createUserWithEmailAndPassword(
-          formProps.email,
-          formProps.password,
+          emailValue,
+          passwordValue,
         );
-
-      console.log(user);
 
       let downloadURL: string = '';
 
-      try {
-        downloadURL = await StorageService.uploadImageAndGetDownloadURL(
-          formProps.username,
-          formProps.file,
-        );
-        console.log(downloadURL);
+      if (fileValue) {
+        try {
+          downloadURL = await StorageService.uploadImageAndGetDownloadURL(
+            usernameValue,
+            fileValue,
+          );
 
-        AuthenticationService.updateProfile(
-          user,
-          formProps.username,
-          downloadURL,
-        );
-      } catch {
-        alert(
-          'Successful registration. However, the image could not be attached...',
-        );
-        return;
+          AuthenticationService.updateProfile(user, usernameValue, downloadURL);
+        } catch {
+          alert('The image could not be attached...');
+        }
       }
 
       try {
         RealTimeDatabaseService.addMemberToTeleportChat({
           userId: user.uid,
-          username: formProps.username,
-          email: formProps.email,
-          imageUrl: downloadURL,
+          username: usernameValue,
+          email: emailValue,
+          photoURL: downloadURL,
         });
       } catch {
-        alert(
-          'Successful registration. However, we could not add you to the chat...',
-        );
+        alert('We could not add you to the chat...');
         return;
       }
 
+      const credentials =
+        await AuthenticationService.signInWithEmailAndPassword(
+          emailValue,
+          passwordValue,
+        );
+
       alert('Successful registration!');
+      saveCredentials(credentials);
+      navigate('/chat');
     } catch (error: unknown) {
       const errorCode = (error as LoginFormError).code;
       const errorMessage = (error as LoginFormError).message;
       alert(errorMessage + errorCode);
-    }*/
+    }
   };
-
-  console.log('usernameValue', usernameValue, usernameHasErrors);
 
   return (
     <form method="POST" onSubmit={submitHandler}>
