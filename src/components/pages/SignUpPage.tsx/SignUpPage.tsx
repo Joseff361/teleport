@@ -1,21 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-
-import LoginForm from '../../organisms/LoginForm/LoginForm';
+import SignUpForm from '../../organisms/SignUpForm/SignUpForm';
 
 function SignUpPage() {
-  const navigate = useNavigate();
-
-  const navigationHandler = () => {
-    navigate('/chat');
-  };
-
   return (
     <div>
       SignUpPage
-      <LoginForm />
-      <button type="button" onClick={navigationHandler}>
-        go to chat
-      </button>
+      <SignUpForm />
     </div>
   );
 }

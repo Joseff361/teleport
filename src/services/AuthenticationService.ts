@@ -4,6 +4,7 @@ import {
   UserCredential,
   createUserWithEmailAndPassword,
   getAuth,
+  signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
 
@@ -23,6 +24,17 @@ class AuthenticationService {
     password: string,
   ): Promise<UserCredential> {
     return await createUserWithEmailAndPassword(
+      this.getAuthInstance(),
+      email,
+      password,
+    );
+  }
+
+  public static async signInWithEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<UserCredential> {
+    return await signInWithEmailAndPassword(
       this.getAuthInstance(),
       email,
       password,

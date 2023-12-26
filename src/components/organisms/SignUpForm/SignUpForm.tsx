@@ -1,14 +1,14 @@
 import { FormEvent, useMemo } from 'react';
 
+import { useInput } from '../../../hooks/useInput';
 import {
   fileHasValidExtension,
   hasAtLeastSixCharactersLong,
   hasAtLeastThreeCharactersLong,
   isValidEmail,
 } from '../../../utils';
-import { useInput } from '../../hooks/useInput';
 
-function LoginForm() {
+function SignUpForm() {
   const {
     value: usernameValue,
     inputChangeHandler: usernameChangeHandler,
@@ -177,4 +177,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default SignUpForm;
