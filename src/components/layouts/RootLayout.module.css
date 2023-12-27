@@ -1,0 +1,29 @@
+.layout {
+  background-color: red;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout__banner {
+  width: 60%;
+  height: 100vh;
+  background-color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.layout__form {
+  width: 40%;
+  height: 100vh;
+  background-color: #fff;
+  padding: 5%;
+}
+
+.layout__image {
+  width: 80%;
+  height: auto;
+  margin-bottom: 10vh;
+}

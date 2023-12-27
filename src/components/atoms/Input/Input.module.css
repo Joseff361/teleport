@@ -1,0 +1,7 @@
+.input {
+  all: unset;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--secondary-color);
+  padding: 10px 5px;
+}

@@ -34,17 +34,17 @@ const router = createBrowserRouter([
         element: <SignUpPage />,
         loader: chechkNoAuthLoader,
       },
-      {
-        path: 'chat', // Relative path
-        element: <ChatPage />,
-        loader: checkAuthLoader,
-      },
-      {
-        path: '*',
-        element: <ChatPage />,
-        loader: checkAuthLoader,
-      },
     ],
+  },
+  {
+    path: '/chat',
+    element: <ChatPage />,
+    loader: checkAuthLoader,
+  },
+  {
+    path: '*',
+    element: <ChatPage />,
+    loader: checkAuthLoader,
   },
 ]);
 

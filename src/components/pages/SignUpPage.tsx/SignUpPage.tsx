@@ -1,9 +1,10 @@
+import FormHeader from '../../atoms/FormHeader/FormHeader';
 import SignUpForm from '../../organisms/SignUpForm/SignUpForm';
 
 function SignUpPage() {
   return (
     <div>
-      SignUpPage
+      <FormHeader title="Sign up" subtitle="Create your account" />
       <SignUpForm />
     </div>
   );

@@ -5,6 +5,7 @@ import { useInput } from '../../../hooks/useInput';
 import AuthenticationService from '../../../services/AuthenticationService';
 import { isValidEmail } from '../../../utils';
 import { saveCredentials } from '../../../utils/auth';
+import Input from '../../atoms/Input/Input';
 
 function SignInForm() {
   const { value: emailValue, inputChangeHandler: emailChangeHandler } =
@@ -32,16 +33,19 @@ function SignInForm() {
 
   return (
     <form method="POST" onSubmit={submitHandler}>
-      <input
+      <Input
+        label="Email"
         value={emailValue}
         type="email"
         name="email"
+        id="email"
         onChange={event => emailChangeHandler(event.target.value)}
       />
       <input
         value={passwordValue}
         type="password"
         name="password"
+        id="password"
         onChange={event => passwordChangeHandler(event.target.value)}
       />
       <button type="submit">sign in</button>
