@@ -1,0 +1,10 @@
+.signin__text {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signin__text > span {
+  cursor: pointer;
+  font-weight: bolder;
+  text-decoration: underline;
+}

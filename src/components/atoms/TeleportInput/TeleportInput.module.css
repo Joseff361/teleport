@@ -1,0 +1,30 @@
+.teleport-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.teleport-input__label {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.teleport-input__input {
+  all: unset;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--secondary-color);
+  padding: 6px 5px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.teleport-input__input:focus {
+  border-color: var(--primary-color);
+}
+
+.teleport-input__error {
+  font-size: 12px;
+  color: rgb(218, 57, 57);
+}

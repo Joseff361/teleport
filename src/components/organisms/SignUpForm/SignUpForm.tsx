@@ -1,4 +1,4 @@
-import { FormEvent, useMemo } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useInput } from '../../../hooks/useInput';
@@ -13,8 +13,13 @@ import {
   isValidEmail,
 } from '../../../utils';
 import { saveCredentials } from '../../../utils/auth';
+import TeleportButton from '../../atoms/TeleportButton/TeleportButton';
+import TeleportInput from '../../atoms/TeleportInput/TeleportInput';
+import FileSelector from '../../molecules/FileSelector/FileSelector';
+import classes from './SignUpForm.module.css';
 
 function SignUpForm() {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const {
@@ -54,6 +59,10 @@ function SignUpForm() {
       return true;
     }
 
+    if (fileValue && !fileHasValidExtension(fileValue)) {
+      return true;
+    }
+
     return false;
   }, [
     usernameValue,
@@ -62,11 +71,12 @@ function SignUpForm() {
     usernameHasErrors,
     emailHasErrors,
     passwordHasErrors,
+    fileValue,
   ]);
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setLoading(true);
     try {
       const { user } =
         await AuthenticationService.createUserWithEmailAndPassword(
@@ -114,71 +124,64 @@ function SignUpForm() {
       const errorCode = (error as LoginFormError).code;
       const errorMessage = (error as LoginFormError).message;
       alert(errorMessage + errorCode);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form method="POST" onSubmit={submitHandler}>
-      <fieldset>
-        <legend>Teleport registration</legend>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            value={usernameValue}
-            onChange={event => usernameChangeHandler(event.target.value)}
-          />
-          {usernameHasErrors && (
-            <span>The username must be at least 3 characters long.</span>
-          )}
+      <TeleportInput
+        label="Username *"
+        value={usernameValue}
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Username"
+        onChange={event => usernameChangeHandler(event.target.value)}
+        errormessage="The username must be at least 3 characters long."
+        haserror={usernameHasErrors}
+      />
+      <TeleportInput
+        label="Email *"
+        value={emailValue}
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Email"
+        onChange={event => emailChangeHandler(event.target.value)}
+        errormessage="Please enter a valid email."
+        haserror={emailHasErrors}
+      />
+      <TeleportInput
+        label="Password *"
+        value={passwordValue}
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+        onChange={event => paswordChangeHandler(event.target.value)}
+        errormessage="Password must be at least 6 characters long."
+        haserror={passwordHasErrors}
+      />
+      <FileSelector
+        label="Profile picture"
+        onChangeFile={fileChangeHandler}
+        hasErrors={fileHasErrors}
+        errormessage="Please enter a valid file (png, .jpg, .jpeg)."
+        fileName={fileValue?.name}
+      />
+      <TeleportButton
+        loading={loading}
+        type="submit"
+        label="Register"
+        disabled={disableForm}
+      />
+      {!loading && (
+        <div className={classes['signup__text']}>
+          <span onClick={() => navigate('signin')}>Back</span>
         </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={emailValue}
-            onChange={event => emailChangeHandler(event.target.value)}
-          />
-          {emailHasErrors && <span>Please enter a valid email.</span>}
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={passwordValue}
-            onChange={event => paswordChangeHandler(event.target.value)}
-          />
-          {passwordHasErrors && (
-            <span>Password must be at least 6 characters long.</span>
-          )}
-        </div>
-        <div>
-          <label htmlFor="file">Profile picture</label>
-          <input
-            type="file"
-            name="file"
-            id="file"
-            accept=".png, .jpg, .jpeg"
-            onChange={event =>
-              fileChangeHandler(
-                event.target.files === null ? null : event.target.files[0],
-              )
-            }
-          />
-          {fileHasErrors && (
-            <span>Please enter a valid file (png, .jpg, .jpeg).</span>
-          )}
-        </div>
-        <button type="submit" disabled={disableForm}>
-          Register
-        </button>
-      </fieldset>
+      )}
     </form>
   );
 }
