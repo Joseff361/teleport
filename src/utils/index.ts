@@ -1,5 +1,20 @@
 import { FormEvent } from 'react';
 
+const months = [
+  'Jan.',
+  'Feb.',
+  'Mar.',
+  'Apr.',
+  'May',
+  'Jun.',
+  'Jul.',
+  'Aug.',
+  'Sept.',
+  'Oct.',
+  'Nov.',
+  'Dec.',
+];
+
 export const buildFormObjectFromEvent = <T>(
   formEvent: FormEvent<HTMLFormElement>,
 ): T => {
@@ -27,4 +42,8 @@ export const fileHasValidExtension = (value: File | null) => {
 
 export const isNotAnEmptyMessage = (value: string) => {
   return value.trim().length > 0;
+};
+
+export const formatMonth = (index: number) => {
+  return months[index] || '';
 };

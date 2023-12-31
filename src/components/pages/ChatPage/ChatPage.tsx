@@ -1,25 +1,14 @@
-import { useNavigate } from 'react-router-dom';
-
-import { logout } from '../../../utils/auth';
-import Chat from '../../organisms/Chat/Chat';
-import SendMessageForm from '../../organisms/SendMessageForm/SendMessageForm';
+import ChatWrapper from '../../organisms/ChatWrapper/ChatWrapper';
+import classes from './ChatPage.module.css';
 
 function ChatPage() {
-  const navigate = useNavigate();
-
-  const signOutHandler = () => {
-    logout();
-    navigate('/');
-  };
-
   return (
-    <div>
-      ChatPage
-      <Chat />
-      <SendMessageForm />
-      <button type="button" onClick={signOutHandler}>
-        sign out
-      </button>
+    <div className={classes.chat}>
+      <section className={classes['chat__messages-list']}></section>
+      <section className={classes['chat__main-chat']}>
+        <ChatWrapper />
+      </section>
+      <section className={classes['chat__members']}></section>
     </div>
   );
 }

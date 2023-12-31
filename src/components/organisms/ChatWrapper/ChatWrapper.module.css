@@ -1,0 +1,33 @@
+.wrapper {
+  background-color: var(--tertiary-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper__header {
+  height: 10vh;
+  background-color: var(--primary-color);
+}
+
+.wrapper__body {
+  height: 80vh;
+  max-height: 80vh;
+  overflow: scroll;
+  overflow-x: hidden;
+  padding: 20px;
+}
+
+.wrapper__body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.wrapper__body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.wrapper__footer {
+  height: 10vh;
+  background-color: var(--primary-color);
+}

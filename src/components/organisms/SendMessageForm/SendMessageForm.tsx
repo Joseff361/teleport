@@ -5,6 +5,7 @@ import { LoginFormError } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
 import { useAppSelector } from '../../../store/hooks';
 import { isNotAnEmptyMessage } from '../../../utils';
+import classes from './SendMessageForm.module.css';
 
 function SendMessageForm() {
   const { value: messageValue, inputChangeHandler: messageChangeHandler } =
@@ -31,16 +32,26 @@ function SendMessageForm() {
   };
 
   return (
-    <form action="POST" onSubmit={submitHandler}>
-      <input
-        type="text"
-        name="message"
-        id="message"
-        value={messageValue}
-        onChange={event => messageChangeHandler(event.target.value)}
-      />
-      <button type="submit" disabled={messageValue.trim().length === 0}>
-        Send
+    <form className={classes.form} action="POST" onSubmit={submitHandler}>
+      <div className={classes['form__input-container']}>
+        <input
+          className={classes['form__input']}
+          type="text"
+          name="message"
+          id="message"
+          value={messageValue}
+          onChange={event => messageChangeHandler(event.target.value)}
+          placeholder="Write a message..."
+        />
+      </div>
+      <button
+        className={`${classes['form__button']} ${
+          messageValue.trim().length === 0 && classes['form__button--disabled']
+        } `}
+        type="submit"
+        disabled={messageValue.trim().length === 0}
+      >
+        <i className="fa-solid fa-paper-plane"></i>
       </button>
     </form>
   );

@@ -50,6 +50,10 @@ class RealTimeDatabaseService {
   public static getTeleportChatReference() {
     return ref(this.getDatabaseInstance(), 'messages/' + MAIN_CHAT_ID);
   }
+
+  public static getTeleportMemberReference() {
+    return ref(this.getDatabaseInstance(), 'members/' + MAIN_CHAT_ID);
+  }
 }
 
 export default RealTimeDatabaseService;

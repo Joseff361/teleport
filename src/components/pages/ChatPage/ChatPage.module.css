@@ -1,0 +1,18 @@
+.chat {
+  display: flex;
+  flex: 1;
+}
+
+.chat__messages-list {
+  flex: 0.25;
+  background-color: blue;
+}
+
+.chat__members {
+  flex: 0.25;
+  background-color: yellow;
+}
+
+.chat__main-chat {
+  flex: 0.5;
+}

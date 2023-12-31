@@ -1,0 +1,25 @@
+.divier-date {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.divier-date__line {
+  height: 1px;
+  width: 100%;
+  background-color: var(--secondary-color);
+  display: block;
+  opacity: 0.1;
+  z-index: 10;
+}
+
+.divier-date__date {
+  color: whitesmoke;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: var(--tertiary-color);
+  margin-top: -12px;
+  z-index: 20;
+}

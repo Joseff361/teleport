@@ -86,17 +86,17 @@ function SignUpForm() {
 
       let downloadURL: string = '';
 
-      if (fileValue) {
-        try {
+      try {
+        if (fileValue) {
           downloadURL = await StorageService.uploadImageAndGetDownloadURL(
             usernameValue,
             fileValue,
           );
-
-          AuthenticationService.updateProfile(user, usernameValue, downloadURL);
-        } catch {
-          alert('The image could not be attached...');
         }
+
+        AuthenticationService.updateProfile(user, usernameValue, downloadURL);
+      } catch {
+        alert('The image could not be attached...');
       }
 
       try {

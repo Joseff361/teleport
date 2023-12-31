@@ -1,6 +1,7 @@
 import { UserCredential } from 'firebase/auth';
 import { redirect } from 'react-router-dom';
 
+import { ChatMember, TeleportMessage } from '../models';
 import { store } from '../store';
 import { authSliceActions } from '../store/authSlice';
 
@@ -49,4 +50,12 @@ export const chechkNoAuthLoader = () => {
   }
 
   return null;
+};
+
+export const isValidMessage = (m: TeleportMessage) => {
+  return m.username.trim().length > 0 && m.message.trim().length > 0;
+};
+
+export const isValidUser = (m: ChatMember) => {
+  return m.username.trim().length > 0;
 };

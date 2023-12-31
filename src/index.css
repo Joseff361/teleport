@@ -1,8 +1,8 @@
 * {
   box-sizing: border-box !important;
-  --primary-color: #222429;
+  --primary-color: #242424;
   --secondary-color: #e9e9e9;
-  --tertiary-color: #0f0f13;
+  --tertiary-color: #1b1b1b;
 }
 
 body {

@@ -1,0 +1,40 @@
+.form {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.form__input {
+  all: unset;
+  color: whitesmoke;
+  width: 100%;
+}
+
+.form__input-container {
+  background-color: var(--tertiary-color);
+  width: 90%;
+  height: 50%;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  z-index: 10;
+  padding-right: 40px;
+}
+
+.form__button {
+  all: unset;
+  cursor: pointer;
+  height: 50%;
+  margin-left: -30px;
+  z-index: 20;
+  color: var(--secondary-color);
+  background-color: var(--tertiary-color);
+}
+
+.form__button--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
