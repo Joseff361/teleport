@@ -2,21 +2,33 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UserCredential } from 'firebase/auth';
 import { ChatMember, TeleportMessage } from '../models';
 
-interface AuthState {
+type ModalSate = 'success' | 'error';
+
+interface State {
   credentials: UserCredential | null;
   messages: TeleportMessage[];
   members: ChatMember[];
+  modal: {
+    isOpen: boolean;
+    message: string;
+    state: ModalSate;
+  };
 }
 
 // Define the initial state using that type
-const initialState: AuthState = {
+const initialState: State = {
   credentials: null,
   messages: [],
   members: [],
+  modal: {
+    isOpen: false,
+    message: '',
+    state: 'success',
+  },
 };
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const sessionSlice = createSlice({
+  name: 'session',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
@@ -33,9 +45,26 @@ export const authSlice = createSlice({
     setMembers: (state, action: PayloadAction<ChatMember[]>) => {
       state.members = action.payload;
     },
+    openModal: (
+      state,
+      action: PayloadAction<{ message: string; state: ModalSate }>,
+    ) => {
+      state.modal = {
+        isOpen: true,
+        message: action.payload.message,
+        state: action.payload.state,
+      };
+    },
+    closeModal: state => {
+      state.modal = {
+        isOpen: false,
+        message: '',
+        state: 'success',
+      };
+    },
   },
 });
 
-export const authSliceActions = authSlice.actions;
+export const sessionActions = sessionSlice.actions;
 
-export default authSlice.reducer;
+export default sessionSlice.reducer;

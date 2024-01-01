@@ -85,7 +85,7 @@ function InoperativeMessage(props: Props) {
 }
 
 function InoperativeMessages() {
-  const messages = useAppSelector(state => state.auth.messages);
+  const messages = useAppSelector(state => state.session.messages);
   const message = [...messages].pop();
 
   const lastMessage = `${message?.username} · ${message?.message}`;
@@ -101,7 +101,7 @@ function InoperativeMessages() {
         ))}
         {message && (
           <InoperativeMessage
-            name={message.username}
+            name="Teleport Team"
             time={buildTime(message.timestamp)}
             message={lastMessage}
             profilePicture={icon}

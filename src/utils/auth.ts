@@ -3,7 +3,7 @@ import { redirect } from 'react-router-dom';
 
 import { ChatMember, TeleportMessage } from '../models';
 import { store } from '../store';
-import { authSliceActions } from '../store/authSlice';
+import { sessionActions } from '../store/sessionSlice';
 
 const localStorageKey = 'teleport-user-credentials';
 
@@ -11,7 +11,7 @@ export const fetchCredentials = () => {
   const credentials = localStorage.getItem(localStorageKey);
 
   if (credentials) {
-    store.dispatch(authSliceActions.setAuth(credentials));
+    store.dispatch(sessionActions.setAuth(credentials));
   }
 
   return null;
@@ -20,16 +20,16 @@ export const fetchCredentials = () => {
 export const saveCredentials = (response: UserCredential) => {
   const stringifiedCredentials = JSON.stringify(response);
   localStorage.setItem(localStorageKey, stringifiedCredentials);
-  store.dispatch(authSliceActions.setAuth(stringifiedCredentials));
+  store.dispatch(sessionActions.setAuth(stringifiedCredentials));
 };
 
 export const logout = () => {
   localStorage.removeItem(localStorageKey);
-  store.dispatch(authSliceActions.removeCredentials());
+  store.dispatch(sessionActions.removeCredentials());
 };
 
 export const getAuthCredentials = (): UserCredential | null => {
-  return store.getState().auth.credentials;
+  return store.getState().session.credentials;
 };
 
 export const checkAuthLoader = () => {

@@ -3,8 +3,8 @@ import { Fragment, useEffect } from 'react';
 
 import { TeleportMessage } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
-import { authSliceActions } from '../../../store/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { sessionActions } from '../../../store/sessionSlice';
 import { buildTime } from '../../../utils';
 import { isValidMessage } from '../../../utils/auth';
 import ProfilePicture from '../../atoms/ProfilePicture/ProfilePicture';
@@ -12,13 +12,13 @@ import DividerDate from '../../molecules/DividerDate/DividerDate';
 import classes from './Chat.module.css';
 
 function Chat() {
-  const messages = useAppSelector(state => state.auth.messages);
+  const messages = useAppSelector(state => state.session.messages);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     onValue(RealTimeDatabaseService.getTeleportChatReference(), snaptshot => {
       const values = snaptshot.val() as Record<string, TeleportMessage>;
-      dispatch(authSliceActions.setMessages(Object.values(values)));
+      dispatch(sessionActions.setMessages(Object.values(values)));
     });
   }, [dispatch]);
 

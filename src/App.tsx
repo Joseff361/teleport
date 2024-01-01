@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import ToastModal from './components/atoms/ToastModal/ToastModal';
 import RootLayout from './components/layouts/RootLayout';
 import ChatPage from './components/pages/ChatPage/ChatPage';
 import ErrorPage from './components/pages/ErrorPage/ErrorPage';
@@ -56,6 +57,7 @@ function App() {
   return (
     <Provider store={store}>
       <RouterProvider router={router} />
+      <ToastModal />
     </Provider>
   );
 }

@@ -3,19 +3,27 @@ import { useEffect } from 'react';
 
 import { ChatMember } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
-import { authSliceActions } from '../../../store/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { sessionActions } from '../../../store/sessionSlice';
 import { isValidUser } from '../../../utils/auth';
 import classes from './ChatHeader.module.css';
 
 function ChatHeader() {
-  const members = useAppSelector(state => state.auth.members);
+  const members = useAppSelector(state => state.session.members);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     onValue(RealTimeDatabaseService.getTeleportMemberReference(), snaptshot => {
       const values = snaptshot.val() as Record<string, ChatMember>;
-      dispatch(authSliceActions.setMembers(Object.values(values)));
+      const membersIds = Object.keys(values);
+
+      const members = Object.values(values).map((member, index) => {
+        return {
+          ...member,
+          userId: membersIds[index],
+        };
+      });
+      dispatch(sessionActions.setMembers(members));
     });
   }, [dispatch]);
 

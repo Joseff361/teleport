@@ -6,6 +6,8 @@ import { LoginFormError } from '../../../models';
 import AuthenticationService from '../../../services/AuthenticationService';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
 import StorageService from '../../../services/StorageService';
+import { useAppDispatch } from '../../../store/hooks';
+import { sessionActions } from '../../../store/sessionSlice';
 import {
   fileHasValidExtension,
   hasAtLeastSixCharactersLong,
@@ -21,6 +23,7 @@ import classes from './SignUpForm.module.css';
 function SignUpForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     value: usernameValue,
@@ -94,20 +97,34 @@ function SignUpForm() {
           );
         }
 
-        AuthenticationService.updateProfile(user, usernameValue, downloadURL);
+        await AuthenticationService.updateProfile(
+          user,
+          usernameValue,
+          downloadURL,
+        );
       } catch {
-        alert('The image could not be attached...');
+        dispatch(
+          sessionActions.openModal({
+            message: 'The image could not be attached...',
+            state: 'error',
+          }),
+        );
       }
 
       try {
-        RealTimeDatabaseService.addMemberToTeleportChat({
+        await RealTimeDatabaseService.addMemberToTeleportChat({
           userId: user.uid,
           username: usernameValue,
           email: emailValue,
           photoURL: downloadURL,
         });
       } catch {
-        alert('We could not add you to the chat...');
+        dispatch(
+          sessionActions.openModal({
+            message: 'We could not add you to the chat...',
+            state: 'error',
+          }),
+        );
         return;
       }
 
@@ -117,13 +134,22 @@ function SignUpForm() {
           passwordValue,
         );
 
-      alert('Successful registration!');
+      dispatch(
+        sessionActions.openModal({
+          message: 'Successful registration!',
+          state: 'success',
+        }),
+      );
       saveCredentials(credentials);
       navigate('/chat');
     } catch (error: unknown) {
-      const errorCode = (error as LoginFormError).code;
       const errorMessage = (error as LoginFormError).message;
-      alert(errorMessage + errorCode);
+      dispatch(
+        sessionActions.openModal({
+          message: errorMessage,
+          state: 'error',
+        }),
+      );
     } finally {
       setLoading(false);
     }

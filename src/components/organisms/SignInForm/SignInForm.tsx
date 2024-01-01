@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useInput } from '../../../hooks/useInput';
 import AuthenticationService from '../../../services/AuthenticationService';
+import { useAppDispatch } from '../../../store/hooks';
+import { sessionActions } from '../../../store/sessionSlice';
 import { hasAtLeastSixCharactersLong, isValidEmail } from '../../../utils';
 import { saveCredentials } from '../../../utils/auth';
 import TeleportButton from '../../atoms/TeleportButton/TeleportButton';
@@ -24,6 +26,7 @@ function SignInForm() {
   } = useInput<string>('', hasAtLeastSixCharactersLong);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,8 +38,19 @@ function SignInForm() {
       );
       saveCredentials(response);
       navigate('/chat');
+      dispatch(
+        sessionActions.openModal({
+          message: `Successful login! Welcome, ${response.user.displayName}`,
+          state: 'success',
+        }),
+      );
     } catch (e) {
-      alert(e);
+      dispatch(
+        sessionActions.openModal({
+          message: 'There was an error logging in.',
+          state: 'error',
+        }),
+      );
     } finally {
       setLoading(false);
     }

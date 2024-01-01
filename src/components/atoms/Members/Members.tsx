@@ -1,14 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 
 import { ChatMember } from '../../../models';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { sessionActions } from '../../../store/sessionSlice';
 import { logout } from '../../../utils/auth';
 import ProfilePicture from '../ProfilePicture/ProfilePicture';
 import classes from './Members.module.css';
 
-function Member(props: ChatMember) {
+interface Props extends ChatMember {
+  active: boolean;
+}
+
+function Member(props: Props) {
   return (
-    <div className={classes.member}>
+    <div
+      className={`${classes.member} ${
+        props.active && classes['member--active']
+      }`}
+    >
       <ProfilePicture photoURL={props.photoURL} username={props.username} />
       <div className={classes['member__name']}>{props.username}</div>
     </div>
@@ -16,12 +25,20 @@ function Member(props: ChatMember) {
 }
 
 function Members() {
-  const members = useAppSelector(state => state.auth.members);
+  const members = useAppSelector(state => state.session.members);
+  const uid = useAppSelector(state => state.session.credentials?.user.uid);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const signOutHandler = () => {
     logout();
     navigate('/');
+    dispatch(
+      sessionActions.openModal({
+        message: 'See you soon!',
+        state: 'success',
+      }),
+    );
   };
 
   return (
@@ -38,7 +55,7 @@ function Members() {
       <section className={classes['members__content']}>
         <section>
           {members.map((member, index) => (
-            <Member {...member} key={index} />
+            <Member {...member} key={index} active={member.userId === uid} />
           ))}
         </section>
       </section>

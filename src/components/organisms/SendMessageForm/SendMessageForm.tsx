@@ -3,7 +3,8 @@ import { FormEvent } from 'react';
 import { useInput } from '../../../hooks/useInput';
 import { LoginFormError } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { sessionActions } from '../../../store/sessionSlice';
 import { isNotAnEmptyMessage } from '../../../utils';
 import classes from './SendMessageForm.module.css';
 
@@ -11,7 +12,8 @@ function SendMessageForm() {
   const { value: messageValue, inputChangeHandler: messageChangeHandler } =
     useInput<string>('', isNotAnEmptyMessage);
 
-  const credentials = useAppSelector(state => state.auth.credentials);
+  const credentials = useAppSelector(state => state.session.credentials);
+  const dispatch = useAppDispatch();
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,9 +27,13 @@ function SendMessageForm() {
       });
       messageChangeHandler('');
     } catch (error: unknown) {
-      const errorCode = (error as LoginFormError).code;
       const errorMessage = (error as LoginFormError).message;
-      alert(errorMessage + errorCode);
+      dispatch(
+        sessionActions.openModal({
+          message: errorMessage,
+          state: 'error',
+        }),
+      );
     }
   };
 

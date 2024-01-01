@@ -56,7 +56,11 @@
 .member {
   display: flex;
   align-items: center;
-  margin: 20px;
+  padding: 20px;
+}
+
+.member--active {
+  background-color: #36373a;
 }
 
 .member__name {
