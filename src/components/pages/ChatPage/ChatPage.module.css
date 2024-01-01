@@ -14,3 +14,31 @@
 .chat__main-chat {
   flex: 0.5;
 }
+
+@media screen and (max-width: 992px) {
+  .chat__messages-list {
+    display: none;
+  }
+
+  .chat__members {
+    flex: 0.3;
+  }
+
+  .chat__main-chat {
+    flex: 0.7;
+  }
+
+  .chat {
+    flex-direction: row-reverse;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .chat__members {
+    display: none;
+  }
+
+  .chat__main-chat {
+    flex: 1;
+  }
+}

@@ -19,8 +19,14 @@
   animation-duration: 0.9s;
 }
 
+.modal__text {
+  text-align: center;
+  white-space: nowrap;
+}
+
 .modal--open {
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 
 .modal--error {

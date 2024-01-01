@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { sessionActions } from '../../../store/sessionSlice';
 import classes from './ToastModal.module.css';
@@ -20,7 +21,7 @@ function ToastModal() {
         modal.state === 'error' && classes['modal--error']
       }`}
     >
-      {modal.message}&ensp;
+      <span className={classes['modal__text']}>{modal.message}&ensp;</span>
       <i
         onClick={() => dispatch(sessionActions.closeModal())}
         style={{ cursor: 'pointer' }}

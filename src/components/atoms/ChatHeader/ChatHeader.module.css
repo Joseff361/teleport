@@ -1,9 +1,16 @@
 .header {
-  display: flex;
   height: 100%;
-  align-items: center;
   padding-left: 40px;
+  padding-right: 20px;
   color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__title-container {
+  display: flex;
+  align-items: center;
 }
 
 .header__image {
@@ -22,4 +29,22 @@
 .header__title {
   font-size: 22px;
   font-weight: bold;
+}
+
+.header__button {
+  all: unset;
+  cursor: pointer;
+  color: #ee3556;
+  font-size: 24px;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding-left: 20px;
+  }
+
+  .header__button {
+    display: block;
+  }
 }

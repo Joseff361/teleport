@@ -86,3 +86,12 @@
   border-radius: 12px;
   padding: 10px 0px;
 }
+
+@media screen and (max-width: 992px) {
+  .members {
+    border-left-width: 0px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: #2f2f2f;
+  }
+}

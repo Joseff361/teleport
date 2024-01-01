@@ -40,7 +40,7 @@ function SignInForm() {
       navigate('/chat');
       dispatch(
         sessionActions.openModal({
-          message: `Successful login! Welcome, ${response.user.displayName}`,
+          message: `Successful login. Welcome!`,
           state: 'success',
         }),
       );
