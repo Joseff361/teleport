@@ -1,16 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UserCredential } from 'firebase/auth';
-import { TeleportMessage } from '../models';
+import { ChatMember, TeleportMessage } from '../models';
 
 interface AuthState {
   credentials: UserCredential | null;
   messages: TeleportMessage[];
+  members: ChatMember[];
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
   credentials: null,
   messages: [],
+  members: [],
 };
 
 export const authSlice = createSlice({
@@ -27,6 +29,9 @@ export const authSlice = createSlice({
     },
     setMessages: (state, action: PayloadAction<TeleportMessage[]>) => {
       state.messages = action.payload;
+    },
+    setMembers: (state, action: PayloadAction<ChatMember[]>) => {
+      state.members = action.payload;
     },
   },
 });

@@ -1,20 +1,23 @@
 import { onValue } from 'firebase/database';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { ChatMember } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
+import { authSliceActions } from '../../../store/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { isValidUser } from '../../../utils/auth';
 import classes from './ChatHeader.module.css';
 
 function ChatHeader() {
-  const [members, setMembers] = useState<ChatMember[]>([]);
+  const members = useAppSelector(state => state.auth.members);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     onValue(RealTimeDatabaseService.getTeleportMemberReference(), snaptshot => {
       const values = snaptshot.val() as Record<string, ChatMember>;
-      setMembers(Object.values(values));
+      dispatch(authSliceActions.setMembers(Object.values(values)));
     });
-  }, []);
+  }, [dispatch]);
 
   const membersCount = members.filter(isValidUser).length;
 

@@ -6,7 +6,6 @@ import profile4 from '../../../assets/profile4.jpg';
 import profile5 from '../../../assets/profile5.jpg';
 import { useAppSelector } from '../../../store/hooks';
 import { buildTime } from '../../../utils';
-
 import classes from './InoperativeMessages.module.css';
 
 interface Props {
