@@ -1,49 +1,33 @@
 import { onValue } from 'firebase/database';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 
 import { TeleportMessage } from '../../../models';
 import RealTimeDatabaseService from '../../../services/RealTimeDatabaseService';
+import { authSliceActions } from '../../../store/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { buildTime } from '../../../utils';
 import { isValidMessage } from '../../../utils/auth';
 import ProfilePicture from '../../atoms/ProfilePicture/ProfilePicture';
 import DividerDate from '../../molecules/DividerDate/DividerDate';
 import classes from './Chat.module.css';
 
 function Chat() {
-  const [messages, setMessages] = useState<TeleportMessage[]>([]);
+  const messages = useAppSelector(state => state.auth.messages);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     onValue(RealTimeDatabaseService.getTeleportChatReference(), snaptshot => {
       const values = snaptshot.val() as Record<string, TeleportMessage>;
-      setMessages(Object.values(values));
+      dispatch(authSliceActions.setMessages(Object.values(values)));
     });
-  }, []);
-
-  const buildTime = (value: number): string => {
-    const date = new Date(value);
-
-    let hours = date.getHours().toString();
-    let minutes = date.getMinutes().toString();
-
-    if (date.getHours().toString().length === 1) {
-      hours = `0${date.getHours()}`;
-    }
-
-    if (date.getMinutes().toString().length === 1) {
-      minutes = `0${date.getMinutes()}`;
-    }
-
-    return `${hours}:${minutes}`;
-  };
+  }, [dispatch]);
 
   return (
     <Fragment>
       {messages.filter(isValidMessage).map((message, index) => (
-        <Fragment>
+        <Fragment key={message.username + message.timestamp.toString()}>
           <DividerDate index={index} messages={messages} />
-          <div
-            className={classes.chat}
-            key={message.username + message.timestamp.toString()}
-          >
+          <div className={classes.chat}>
             <ProfilePicture
               photoURL={message.photoURL}
               username={message.username}

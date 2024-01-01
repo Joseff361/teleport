@@ -47,3 +47,20 @@ export const isNotAnEmptyMessage = (value: string) => {
 export const formatMonth = (index: number) => {
   return months[index] || '';
 };
+
+export const buildTime = (value: number): string => {
+  const date = new Date(value);
+
+  let hours = date.getHours().toString();
+  let minutes = date.getMinutes().toString();
+
+  if (date.getHours().toString().length === 1) {
+    hours = `0${date.getHours()}`;
+  }
+
+  if (date.getMinutes().toString().length === 1) {
+    minutes = `0${date.getMinutes()}`;
+  }
+
+  return `${hours}:${minutes}`;
+};
